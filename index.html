@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Elm • Pokemon Idle Game</title>
+  <script type="text/javascript" src="bundle.js"></script>
+  <!--<link rel="stylesheet" href="style.css">-->
+</head>
+
+<body>
+
+</body>
+
+<script type="text/javascript">
+  var STORAGE_KEY = 'idle-pokemon-save';
+  var storedState = localStorage.getItem(STORAGE_KEY);
+  var startingState = storedState ? JSON.parse(storedState) : null;
+  var app = Elm.Main.fullscreen(startingState);
+  
+  app.ports.setStorage.subscribe(function(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  });
+</script>
+
+</html>

@@ -1,4 +1,16 @@
-module GenericCounter exposing ( Model, Msg, init, update, view, subscriptions, setEpc, setEps, setEnabled, decrementCounter )
+module GenericCounter exposing 
+  ( Model
+  , Msg
+  , init
+  , update
+  , view
+  , subscriptions
+  , setEpc
+  , setEps
+  , setEnabled
+  , decrementCounter
+  , convert
+  )
 
 import Html exposing (..)
 import Html.Attributes exposing (disabled)
@@ -56,6 +68,17 @@ decrementCounter model msg modelNeeded =
     Idle time ->
       { model | count = model.count - modelNeeded.eps * 10 }
 
+convert: Model -> Model -> Model -> (Model, Model)
+convert modelWasted modelGained modelNeeded =
+  let
+    investment = modelNeeded.count * 10
+    wastedAmount = if modelWasted.count >= investment then investment else 0
+    gainedAmount = if wastedAmount > 0 then wastedAmount // 10 else 0
+  in
+    ( { modelWasted | count = modelWasted.count - wastedAmount }
+    , { modelGained | count = modelGained.count + gainedAmount }
+    )
+
 -- SUBSCRIPTIONS
 
 subscriptions : Model -> Sub Msg
@@ -69,6 +92,12 @@ view model =
   div []
     [ h2 [] [ text (toString model.count) ]
     , button [ onClick Click, disabled (not model.enabled) ] [ text model.label ]
-    , br [] []
+    , if model.eps > 0 then renderEpsLabel model else br [] []
+    ]
+
+renderEpsLabel : Model -> Html Msg
+renderEpsLabel model =
+  div []
+    [ br [] []
     , span [] [ text (model.label ++ "/s " ++ toString model.eps) ]
     ]

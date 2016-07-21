@@ -42,6 +42,7 @@ update msg model =
     ToggleLed ->
       (model, toggleLed)
 
+active : Model -> Bool
 active model =
   model.ledStatus
 
@@ -67,8 +68,7 @@ decodeLedStatus =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Sub.none
-  -- Time.every second Tick
+  Time.every second Tick
 
 -- VIEW
 
