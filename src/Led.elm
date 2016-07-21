@@ -1,4 +1,4 @@
-module Led exposing ( Model, Msg, init, update, view, subscriptions )
+module Led exposing ( Model, Msg, init, update, view, subscriptions, active )
 
 import Html exposing (..)
 import Html.App as App
@@ -42,6 +42,9 @@ update msg model =
     ToggleLed ->
       (model, toggleLed)
 
+active model =
+  model.ledStatus
+
 getLedStatus : Cmd Msg
 getLedStatus = 
   let
@@ -64,7 +67,8 @@ decodeLedStatus =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Time.every second Tick
+  Sub.none
+  -- Time.every second Tick
 
 -- VIEW
 
